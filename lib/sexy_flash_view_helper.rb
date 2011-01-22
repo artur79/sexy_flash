@@ -6,7 +6,7 @@ module SexyFlashViewHelper
   # * timeout: Flash timeout in seconds
   # * duration: Flash effect duration
   # ==
-  # i.e: sexy_flash :timeout => 2, :duration => 1, :show_effect => "BlindDown", :hide_effect => "BlindUp"
+  # i.e: sexy_flash :timeout => 2, :duration => 1, :show_effect => "fadeIn", :hide_effect => "fadeOut"
   # If :timeout is set to be 0 or less then 0. Don't hide the flash message
   #
   # These same options can be overwritten at when creating the flash, and for that flash message only:
