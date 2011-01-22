@@ -7,19 +7,26 @@ module SexyFlashViewHelper
   # * duration: Flash effect duration
   # ==
   # i.e: sexy_flash :timeout => 2, :duration => 1, :show_effect => "BlindDown", :hide_effect => "BlindUp"
-  # If :timeout is set to be 0 or less then 0. Don't hide the flash message  
+  # If :timeout is set to be 0 or less then 0. Don't hide the flash message
   #
   # These same options can be overwritten at when creating the flash, and for that flash message only:
   #
   # i.e:
   # flash[:notice] = 'I just want you to know', {:timeout => 0, :show_effect => 'BlindDown' }
-  def sexy_flash(view_options = {})
-    the_flash = ""
+  #
+  # for fadeIn and fadeOut show/hide effects used jQuery core functions (with duration and timeout applied), so no need jQueryUI, for the rest its required
 
-    global_timeout = view_options.has_key?(:timeout) ? view_options[:timeout]*1000 : 5
-    global_duration = view_options[:duration] || 1
-    global_show_effect = view_options[:show_effect] || 'Appear'
-    global_hide_effect = view_options[:hide_effect] || 'Fade'
+  def sexy_flash(view_options = {})
+
+    the_flash = the_flash_js = ''
+    fancybox_resize_js = '$.fancybox.resize();' if view_options[:fancybox]
+
+    global_timeout = view_options[:timeout] ? view_options[:timeout]*1000 : 0
+    global_duration = view_options[:duration] || 0
+    global_show_effect = view_options[:show_effect] || 'fadeIn'
+    global_hide_effect = view_options[:hide_effect] || 'fadeOut'
+    global_target = view_options[:target] || nil
+    global_debug = view_options[:debug] ? true : false
 
     [:error, :warning, :info, :notice].each do |key|
       if flash.has_key?(key)
@@ -29,20 +36,45 @@ module SexyFlashViewHelper
         duration = flash_options[:duration] || global_duration
         show_effect = flash_options[:show_effect] || global_show_effect
         hide_effect = flash_options[:hide_effect] || global_hide_effect
+        target = flash_options[:target] || nil
 
-        the_flash += content_tag(:div, flash[key], :class => 'flash', :id => "flash_#{key}")
-        the_flash += content_tag :script, :type => 'text/javascript' do
-            "$('flash_#{key}').style.display = 'none';" + 
-            "new Effect.#{show_effect}('flash_#{key}', {duration: #{duration}});"
-        end
-        if timeout > 0
-          the_flash += content_tag :script, :type => 'text/javascript' do
-            "setTimeout(\"Effect.#{hide_effect}('flash_#{key}')\", #{timeout})"
+        if (global_target.nil? and target.nil?) or target == global_target
+
+          the_flash += content_tag(:div, flash[key], :class => 'flash', :id => "flash_#{key}",
+            :style => "display: #{show_effect.blank? ? 'block' : 'none'};")
+
+          if show_effect
+            if show_effect == 'fadeIn'
+              duration || "'slow'"
+              the_flash_js += "$('#flash_#{key}').fadeIn(#{duration});\n"
+            else
+              the_flash_js += "new Effect.#{show_effect}('flash_#{key}', {duration: #{duration}});\n" # add later!
+            end
           end
-        end #if timeout > 0
+
+          if timeout > 0
+            if hide_effect
+              if hide_effect == 'fadeOut'
+                the_flash_js += "$('#flash_#{key}').delay(#{timeout}).fadeOut(function(){#{fancybox_resize_js}});\n"
+              else
+                the_flash_js += "setTimeout(\"Effect.#{hide_effect}('#flash_#{key}')\", #{timeout})" #add later!
+              end
+            else
+              the_flash_js += "$('#flash_#{key}').delay(#{timeout}).hide(function(){#{fancybox_resize_js}});\n"
+            end
+          end #if timeout > 0
+
+        end
+
       end #if flash.has_key?(key)
     end #each do |key|
-    return the_flash
-  end 
+
+    the_flash_js += "$('.flash').corner('round 5px');\n"
+    the_flash_js += fancybox_resize_js unless fancybox_resize_js.blank?
+    the_flash += javascript_tag the_flash_js unless the_flash.blank?
+    the_flash += javascript_tag "alert('#{escape_javascript the_flash}');" if global_debug
+
+    return the_flash.html_safe
+  end
 
 end
