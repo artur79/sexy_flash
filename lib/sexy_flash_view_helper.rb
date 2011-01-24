@@ -28,6 +28,12 @@ module SexyFlashViewHelper
     global_target = view_options[:target] || nil
     global_debug = view_options[:debug] ? true : false
 
+    #patch for Devise
+    if flash.has_key?(:alert)
+      flash[:error] = flash[:alert]
+      flash.delete :alert
+    end
+
     [:error, :warning, :info, :notice].each do |key|
       if flash.has_key?(key)
         #set options specific to this flash message:
