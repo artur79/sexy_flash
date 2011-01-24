@@ -1,5 +1,5 @@
 #patch to vendor/rails/actionpack/lib/action_controller/flash.rb
-ActionController::Flash::FlashHash.class_eval do
+ActionDispatch::Flash::FlashHash.class_eval do
 
   def brackets_equal_with_sexy(k, v)
     v = Array(v)
