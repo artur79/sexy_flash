@@ -8,7 +8,7 @@ Requires
  * JQuery
  * JQuery UI
  
-You can install both of these from https://github.com/rails/jquery-ujs. JQuery will be the default Rails JS library in 3.1.
+You can install both of these into your Rails project from https://github.com/rails/jquery-ujs. JQuery will be the default Rails JS library in 3.1.
 
 Example
 =======
@@ -25,9 +25,13 @@ Options
 
 The sexy_flash helper accepts an options hash which overrides the defaults. For example:
 
-<%= sexy_flash :timeout => 2, :duration => 1, :show_effect => "fade", :hide_effect => "fade" %>
+<%= sexy_flash :timeout => 2000, :duration => 1000, :show_effect => "fade", :hide_effect => "fade" %>
 
-The valid effects to be used are the JQuery UI effects: 'fade', 'blind', 'clip', 'drop', 'explode', 'fold', 'puff', 'slide', 'scale', 'size', 'pulsate'.
+Options are:
+
+ * timeout: in ms, how long the flash will display for.
+ * duration: in ms, the duration of the animation that shows and hides the flash
+ * show_effect and hide_effect: the JQuery UI animation effect to use when hiding and showing the flash. The valid effects are the JQuery UI effects: 'fade', 'blind', 'clip', 'drop', 'explode', 'fold', 'puff', 'slide', 'scale', 'size', 'pulsate'.
 
 In addition, sometimes you would want to specify flash message options upon creation. You may specify options on your controller, which will override any options you've specified on the sexy_flash helper call in your view. For example:
 
