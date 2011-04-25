@@ -43,7 +43,7 @@ Contributors
   * Akhil Bansal (http://webonrails.com): created global options functionality on the sexy_flash view helper.
   * Richard Luther (http://github.com/tangofoxtrot): Bug fix on install script
   * Artur79 (http://github.com/artur79): Rails 3 fixes, initial migration to JQuery
-  * James Kahn (http://github.com/jisk): Migration to JQuery, documentation cleanup
+  * James Kahn (http://github.com/jisk): Migration to JQuery UI, documentation cleanup
 
 Licence
 =======
