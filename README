@@ -1,16 +1,22 @@
 SexyFlash
 =========
 
-This plugin provides an easy to use helper to display flash messages. It provides styling for flash messages, and scriptaculous effects for extra sexyness.
+This plugin provides an easy to use helper to display flash messages. It provides styling for flash messages, and JQuery UI effects for extra sexiness.
 
+Requires
+========
+ * JQuery
+ * JQuery UI
+ 
+You can install both of these from https://github.com/rails/jquery-ujs. JQuery will be the default Rails JS library in 3.1.
 
 Example
 =======
 Add the stylesheet in your layout:
+
 <%= stylesheet_link_tag "sexy_flash" %>
 
-
-Use flash notice, warning and error as you normally would. Then simply call the helper from your views:
+Use flash notice, warning and error as you normally would. Then simply call the helper from your view:
 
 <%= sexy_flash %>
 
@@ -19,17 +25,21 @@ Options
 
 The sexy_flash helper accepts an options hash which overrides the defaults. For example:
 
-<%= sexy_flash :timeout => 2, :duration => 1, :show_effect => "BlindDown", :hide_effect => "BlindUp" %>
+<%= sexy_flash :timeout => 2, :duration => 1, :show_effect => "fade", :hide_effect => "fade" %>
+
+The valid effects to be used are the JQuery UI effects: 'fade', 'blind', 'clip', 'drop', 'explode', 'fold', 'puff', 'slide', 'scale', 'size', 'pulsate'.
 
 In addition, sometimes you would want to specify flash message options upon creation. You may specify options on your controller, which will override any options you've specified on the sexy_flash helper call in your view. For example:
 
-flash[:error] = 'Dude, you screwed up!', {:timeout => 0} # don't time out.
+flash[:error] = 'Dude, you screwed up!', {:timeout => 0} # Don't hide the flash message.
 
 Contributors
 ============
 
   * Akhil Bansal (http://webonrails.com): created global options functionality on the sexy_flash view helper.
   * Richard Luther (http://github.com/tangofoxtrot): Bug fix on install script
+  * Artur79 (http://github.com/artur79): Rails 3 fixes, initial migration to JQuery
+  * James Kahn (http://github.com/jisk): Migration to JQuery, documentation cleanup
 
 Licence
 =======
